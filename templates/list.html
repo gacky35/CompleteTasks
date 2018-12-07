@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <title>List</title>
+    <body>
+        <h1>{{username}}'s task</h1>
+        <a href="add.html">Task Add</a>
+        <a href="index.html">Log Out</a>
+        <br>
+        <select name="displayData">
+            <option value="all">ALL</option>
+            <option value="finished">FINISHED</option>
+            <option value="working">WORKING</option>
+            <option value="notstarted">NOT STARTED</option>
+        </select>
+        <table border="1" id="task">
+            <tr>
+                <td>Contents</td>
+                <td>Status</td>
+                <td>Deadline</td>
+                <td>Detail</td>
+                <td>Edit</td>
+            </tr>
+            {% for task in tasks %}
+            <tr>
+                <td>{{ task[0] }}</td>
+                <td>{{ task[1] }}</td>
+                <td>{{ task[2] }}</td>
+                <td>{{ task[3] }}</td>
+                <td><a href="{{ task[5] }}">Edit</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+        <script>
+            var select = document.getElementsByName('displayData')[0];
+            select.addEventListener('change',()=>{
+                row = task.rows.length;
+                if (select.value=="working") {
+                    for ( var i = 1; i < row; i++ ) {
+                        if (select.value!=task.rows[i].cells[1].innerText){
+                            task.rows[i].style.display = "none";
+                        } else {
+                            task.rows[i].style.display = "";
+                        }
+                    }
+                } else if (select.value=="finished") {
+                    for ( var i = 1; i < row; i++ ) {
+                        if (select.value!=task.rows[i].cells[1].innerText){
+                            task.rows[i].style.display = "none";
+                        } else {
+                            task.rows[i].style.display = "";
+                        }
+                    }
+                } else if (select.value=="notstarted") {
+                    for ( var i = 1; i < row; i++ ) {
+                        if(select.value!=task.rows[i].cells[1].innerText){
+                            task.rows[i].style.display = "none";
+                        } else {
+                            task.rows[i].style.display = "";
+                        }
+                    }
+                } else {
+                    for ( var i = 1; i < row; i++ ) {
+                        task.rows[i].style.display = "";
+                    }
+                }
+            })
+        </script>
+    </body>
+</html>

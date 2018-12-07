@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <title>Add Task</title>
+    <body>
+        <h1>Add your task</h1>
+        <hr>
+        <table>
+            <form action="add.html" method="post">
+                <tr>
+                    <th>
+                        Content
+                    </th>
+                    <td>
+                        <input type="text" name="contents" value="" size="24">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Status
+                    </th>
+                    <td>
+                        <select name="status">
+                            <option value="notstarted">NOT STARTED</option>
+                            <option value="finished">FINISHED</option>
+                            <option value="working">WORKING</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Deadline
+                    </th>
+                    <td>
+                        <input type="date" name="deadline" value="" size="24">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Detail
+                    </th>
+                    <td>
+                        <input type="text" name="detail" value="" size="24">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="submit" value="Add">
+                    </td>
+                </tr>
+            </form>
+        </table>
+    </body>
+</html>

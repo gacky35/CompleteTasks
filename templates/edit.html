@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <title>Edit Task</title>
+    <body>
+        <h1>Edit your task</h1>
+        <hr>
+        <table>
+            <form action="edit.html" method="post">
+                {% for task in tasks %}
+                <tr>
+                    <th>
+                        Content
+                    </th>
+                    <td>
+                        <input type="text" name="contents" value="{{ task[0] }}" size="24">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Status
+                    </th>
+                    <td>
+                        <select name="status" value="">
+                            <option value="notstarted">NOT STARTED</option>
+                            <option value="finished">FINISHED</option>
+                            <option value="working">WORKING</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Deadline
+                    </th>
+                    <td>
+                        <input type="date" name="deadline" value="{{ task[2] }}" size="24">
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        Detail
+                    </th>
+                    <td>
+                        <input type="text" name="detail" value="{{ task[3] }}" size="24">
+                    </td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td>
+                        <input type="submit" value="Edit">
+                    </td>
+                </tr>
+            </form>
+        </table>
+        <script>
+            
+        </script>
+    </body>
+</html>
