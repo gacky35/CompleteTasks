@@ -7,16 +7,11 @@ app.secret_key = key.key()
 connection = psycopg2.connect("host=localhost dbname=todo user=postgres password=postgres")
 cur = connection.cursor()
 
-
 @app.route('/')
 def log_in():
     return render_template('index.html')
 
-@app.route('/add.html')
-def adding():
-    return render_template('add.html')
-
-@app.route('/add.html',methods=['POST'])
+@app.route('/add.html',methods=['POST', 'GET'])
 def add():
     if request.method == 'POST':
         username = session.get('name')
@@ -26,8 +21,10 @@ def add():
             ids = row[0] + 1
         cur.execute("INSERT INTO task (content, status, deadline, detail, username, id) VALUES (%s, %s, %s, %s, %s, %s)", (request.form['contents'], request.form['status'], request.form['deadline'], request.form['detail'], username, ids))
         connection.commit()
-    tasks = pick()
-    return render_template('list.html', username=username, tasks=tasks)
+        tasks = pick()
+        return render_template('list.html', username=username, tasks=tasks)
+    else:
+        return render_template('add.html')
 
 @app.route('/list.html', methods=['POST'])
 def display():
@@ -59,12 +56,7 @@ def edited():
 def regist_disp():
     return render_template('regist.html')
 
-@app.route('/index.html')
-def log_out():
-    session.pop('name', None)
-    return render_template('index.html')
-
-@app.route('/index.html', methods = ['POST'])
+@app.route('/index.html', methods = ['POST', 'GET'])
 def regist():
     if request.method == 'POST':
         username = request.form['user_name']
@@ -79,8 +71,9 @@ def regist():
             else:
                 return render_template('regist.html')
         return render_template('regist.html')
-
-    return render_template('regist.html')
+    else:
+        session.pop('name', None)
+        return render_template('index.html')
 
 @app.route('/<int:get_id>')
 def edit(get_id):
