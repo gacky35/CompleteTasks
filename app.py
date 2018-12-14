@@ -26,7 +26,7 @@ def add():
     else:
         return render_template('add.html')
 
-@app.route('/list.html', methods=['POST'])
+@app.route('/list.html', methods=['POST', 'GET'])
 def display():
     if request.method == 'POST':
         session['name'] = request.form['user_name']
@@ -39,6 +39,11 @@ def display():
         else:
             tasks = pick()
             return render_template('list.html', username=username, tasks=tasks)
+
+    else:
+        username = session.get('name')
+        tasks = pick()
+        return render_template('list.html', username=username, tasks=tasks)
 
 @app.route('/edit.html', methods=['POST'])
 def edited():
