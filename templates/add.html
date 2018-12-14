@@ -8,12 +8,13 @@
         <h1>Add your task</h1>
         <hr>
         <table>
-            <form action="add.html" method="post">
+            <form action="add.html" method="post", name="add", onSubmit="return confirm()">
                 <tr>
                     <th>
                         Content
                     </th>
                     <td>
+                        <font color="red">*</font>
                         <input type="text" name="contents" value="" size="24">
                     </td>
                 </tr>
@@ -22,6 +23,7 @@
                         Status
                     </th>
                     <td>
+                        <font color="red">*</font>
                         <select name="status">
                             <option value="notstarted">NOT STARTED</option>
                             <option value="finished">FINISHED</option>
@@ -34,6 +36,7 @@
                         Deadline
                     </th>
                     <td>
+                        <font color="red">*</font>
                         <input type="date" name="deadline" value="" size="24">
                     </td>
                 </tr>
@@ -42,6 +45,7 @@
                         Detail
                     </th>
                     <td>
+                        <font color="red">*</font>
                         <input type="text" name="detail" value="" size="24">
                     </td>
                 </tr>
@@ -52,5 +56,24 @@
                 </tr>
             </form>
         </table>
+        <script>
+            function confirm(){
+                var flag = 0;
+                if ( document.add.contents.value == "" ) {
+                    flag = 1;
+                } else if ( document.add.deadline.value == "" ) {
+                    flag = 1;
+                } else if ( document.add.detail.value == "" ) {
+                    flag = 1;
+                }
+
+                if ( flag ) {
+                    window.alert('入力データが不足しています');
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        </script>
     </body>
 </html>
