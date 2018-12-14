@@ -1,8 +1,9 @@
 from flask import Flask, render_template, request, session
 import psycopg2
+import key
 
 app = Flask(__name__)
-app.secret_key = 'hogehugapiyoham'
+app.secret_key = key.key()
 connection = psycopg2.connect("host=localhost dbname=todo user=postgres password=postgres")
 cur = connection.cursor()
 
@@ -18,14 +19,15 @@ def adding():
 @app.route('/add.html',methods=['POST'])
 def add():
     if request.method == 'POST':
+        username = session.get('name')
         cur.execute("SELECT COUNT(id) FROM task")
         rows = cur.fetchall()
         for row in rows:
             ids = row[0] + 1
-        cur.execute("INSERT INTO task (content, status, deadline, detail, username, id) VALUES (%s, %s, %s, %s, %s, %s)", (request.form['contents'], request.form['status'], request.form['deadline'], request.form['detail'], session[0], ids))
+        cur.execute("INSERT INTO task (content, status, deadline, detail, username, id) VALUES (%s, %s, %s, %s, %s, %s)", (request.form['contents'], request.form['status'], request.form['deadline'], request.form['detail'], username, ids))
         connection.commit()
     tasks = pick()
-    return render_template('list.html', username=session[0], tasks=tasks)
+    return render_template('list.html', username=username, tasks=tasks)
 
 @app.route('/list.html', methods=['POST'])
 def display():
