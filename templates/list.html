@@ -31,7 +31,7 @@
                 <td>{{ task[2] }}</td>
                 <td>{{ task[3] }}</td>
                 <td><a href="{{ task[5] }}">Edit</a></td>
-                <td><a href="delete?no={{ task[5] }}">Delete</a></td>
+                <td><a href="delete?no={{ task[5] }}" onClick="return check()">Delete</a></td>
             </tr>
             {% endfor %}
         </table>
@@ -70,6 +70,17 @@
                     }
                 }
             })
+        </script>
+        <script>
+            function check() {
+                if(window.confirm("本当に削除していいですか?")) {
+                    window.alert("削除します");
+                    return true;
+                } else {
+                    window.alert("キャンセルしました");
+                    return false;
+                }
+            }
         </script>
     </body>
 </html>
