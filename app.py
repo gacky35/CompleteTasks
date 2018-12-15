@@ -19,6 +19,12 @@ def add():
         rows = cur.fetchall()
         for row in rows:
             ids = row[0] + 1
+        while True:
+            cur.execute("select * from task where id ='"+str(ids)+"'")
+            check = cur.fetchall()
+            if not check:
+                break
+            ids = ids + 1
         cur.execute("INSERT INTO task (content, status, deadline, detail, username, id) VALUES (%s, %s, %s, %s, %s, %s)", (request.form['contents'], request.form['status'], request.form['deadline'], request.form['detail'], username, ids))
         connection.commit()
         tasks = pick()
@@ -78,6 +84,7 @@ def regist():
         return render_template('regist.html')
     else:
         session.pop('name', None)
+        session.pop('no', None)
         return render_template('index.html')
 
 @app.route('/<int:get_id>')
@@ -86,6 +93,14 @@ def edit(get_id):
     cur.execute("select * from task where id = '" + str(get_id) + "'")
     tasks = cur.fetchall()
     return render_template('edit.html', tasks=tasks)
+
+@app.route('/delete')
+def delete():
+    session['no'] = request.args.get('no', '')
+    cur.execute("delete from task where id = '" + session.get('no') + "'")
+    connection.commit()
+    tasks = pick()
+    return render_template('list.html', username=session.get('name'), tasks=tasks)
 
 def pick():
     username = session.get('name')

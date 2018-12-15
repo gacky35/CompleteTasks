@@ -22,6 +22,7 @@
                 <td>Deadline</td>
                 <td>Detail</td>
                 <td>Edit</td>
+                <td>Delete</td>
             </tr>
             {% for task in tasks %}
             <tr>
@@ -30,6 +31,7 @@
                 <td>{{ task[2] }}</td>
                 <td>{{ task[3] }}</td>
                 <td><a href="{{ task[5] }}">Edit</a></td>
+                <td><a href="delete?no={{ task[5] }}">Delete</a></td>
             </tr>
             {% endfor %}
         </table>
@@ -37,6 +39,7 @@
             var select = document.getElementsByName('displayData')[0];
             select.addEventListener('change',()=>{
                 row = task.rows.length;
+                console.log(select.value)
                 if (select.value=="working") {
                     for ( var i = 1; i < row; i++ ) {
                         if (select.value!=task.rows[i].cells[1].innerText){
@@ -66,7 +69,7 @@
                         task.rows[i].style.display = "";
                     }
                 }
-            }
+            })
         </script>
     </body>
 </html>
