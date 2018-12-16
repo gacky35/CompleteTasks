@@ -3,9 +3,11 @@
     <head>
         <title>List</title>
         <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+        <script type="text/javascript" src="/static/js/list.js"></script>
     </head>
     <body>
         <h1>{{username}}'s task</h1>
+        <hr>
         <a href="add.html">Task Add</a>
         <a href="index.html">Log Out</a>
         <br>
@@ -34,53 +36,7 @@
                 <td><a href="delete?no={{ task[5] }}" onClick="return check()">Delete</a></td>
             </tr>
             {% endfor %}
+            <script type="text/javascript" src="/static/js/change.js"></script>
         </table>
-        <script>
-            var select = document.getElementsByName('displayData')[0];
-            select.addEventListener('change',()=>{
-                row = task.rows.length;
-                console.log(select.value)
-                if (select.value=="working") {
-                    for ( var i = 1; i < row; i++ ) {
-                        if (select.value!=task.rows[i].cells[1].innerText){
-                            task.rows[i].style.display = "none";
-                        } else {
-                            task.rows[i].style.display = "";
-                        }
-                    }
-                } else if (select.value=="finished") {
-                    for ( var i = 1; i < row; i++ ) {
-                        if (select.value!=task.rows[i].cells[1].innerText){
-                            task.rows[i].style.display = "none";
-                        } else {
-                            task.rows[i].style.display = "";
-                        }
-                    }
-                } else if (select.value=="notstarted") {
-                    for ( var i = 1; i < row; i++ ) {
-                        if(select.value!=task.rows[i].cells[1].innerText){
-                            task.rows[i].style.display = "none";
-                        } else {
-                            task.rows[i].style.display = "";
-                        }
-                    }
-                } else {
-                    for ( var i = 1; i < row; i++ ) {
-                        task.rows[i].style.display = "";
-                    }
-                }
-            })
-        </script>
-        <script>
-            function check() {
-                if(window.confirm("本当に削除していいですか?")) {
-                    window.alert("削除します");
-                    return true;
-                } else {
-                    window.alert("キャンセルしました");
-                    return false;
-                }
-            }
-        </script>
     </body>
 </html>

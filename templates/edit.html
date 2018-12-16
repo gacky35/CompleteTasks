@@ -3,13 +3,14 @@
     <head>
         <title>Edit Task</title>
         <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+        <script style="text/javascript" src="/static/js/edit.js"></script>
     </head>
     <body>
         <h1>Edit your task</h1>
         <hr>
         <p><a href="list.html">Back to the list</a></p>
         <table>
-            <form action="edit.html" method="post">
+            <form action="edit.html" name="edit" method="post" onSubmit="return check()">
                 {% for task in tasks %}
                 <tr>
                     <th>
@@ -55,8 +56,5 @@
                 </tr>
             </form>
         </table>
-        <script>
-            
-        </script>
     </body>
 </html>

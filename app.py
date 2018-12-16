@@ -75,13 +75,9 @@ def regist():
         cur.execute("SELECT * FROM users WHERE username='" + username + "'")
         check = cur.fetchall()
         if not check:
-            if ( password == request.form['confirm'] ):
-                cur.execute("INSERT INTO users (username, password) VALUES ('" + username + "', md5('" + password + "'))")
-                connection.commit()
-                return render_template('index.html')
-            else:
-                return render_template('regist.html')
-        return render_template('regist.html')
+            cur.execute("INSERT INTO users (username, password) VALUES ('" + username + "', md5('" + password + "'))")
+            connection.commit()
+            return render_template('index.html')
     else:
         session.pop('name', None)
         session.pop('no', None)
@@ -104,7 +100,7 @@ def delete():
 
 def pick():
     username = session.get('name')
-    cur.execute("SELECT * FROM task WHERE username='" + username + "'")
+    cur.execute("SELECT * FROM task WHERE username='" + username + "' ORDER BY id ASC")
     tasks = cur.fetchall()
     return tasks
 

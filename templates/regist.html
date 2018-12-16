@@ -3,13 +3,16 @@
     <head>
         <title>Registration</title>
         <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+        <script type="text/javascript" src="/static/js/regist.js"></script>
     </head>
     <body>
         <h1>
             Registration
         </h1>
+        <hr>
+        <p><a href="index.html">Back to the index</a></p>
         <table>
-            <form action="index.html", method="post">
+            <form action="index.html", method="post" name="regist" onSubmit="return check()">
                 <tr>
                     <th>
                         user name : 

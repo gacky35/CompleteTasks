@@ -3,13 +3,14 @@
     <head>
         <title>Add Task</title>
         <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+        <script type="text/javascript" src="/static/js/check.js"></script>
     </head>
     <body>
         <h1>Add your task</h1>
         <hr>
         <p><a href="list.html">Back to the list</a></p>
         <table>
-            <form action="add.html" method="post", name="add", onSubmit="return confirm()">
+            <form action="add.html" method="post", name="add", onSubmit="return check()">
                 <tr>
                     <th>
                         Content
@@ -57,24 +58,5 @@
                 </tr>
             </form>
         </table>
-        <script>
-            function confirm(){
-                var flag = 0;
-                if ( document.add.contents.value == "" ) {
-                    flag = 1;
-                } else if ( document.add.deadline.value == "" ) {
-                    flag = 1;
-                } else if ( document.add.detail.value == "" ) {
-                    flag = 1;
-                }
-
-                if ( flag ) {
-                    window.alert('入力データが不足しています');
-                    return false;
-                } else {
-                    return true;
-                }
-            }
-        </script>
     </body>
 </html>
