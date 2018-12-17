@@ -11,7 +11,7 @@ cur = connection.cursor()
 def log_in():
     return render_template('index.html')
 
-@app.route('/add.html',methods=['POST', 'GET'])
+@app.route('/add',methods=['POST', 'GET'])
 def add():
     if request.method == 'POST':
         username = session.get('name')
@@ -32,7 +32,7 @@ def add():
     else:
         return render_template('add.html')
 
-@app.route('/list.html', methods=['POST', 'GET'])
+@app.route('/list', methods=['POST', 'GET'])
 def display():
     if request.method == 'POST':
         session['name'] = request.form['user_name']
@@ -51,7 +51,7 @@ def display():
         tasks = pick()
         return render_template('list.html', username=username, tasks=tasks)
 
-@app.route('/edit.html', methods=['POST', 'GET'])
+@app.route('/edit', methods=['POST', 'GET'])
 def edit():
     if request.method == 'POST':
         no = session.get('no')
@@ -67,11 +67,11 @@ def edit():
         tasks = cur.fetchall()
         return render_template('edit.html', tasks=tasks)
 
-@app.route('/regist.html')
+@app.route('/regist')
 def regist_disp():
     return render_template('regist.html', error="")
 
-@app.route('/index.html', methods = ['POST', 'GET'])
+@app.route('/index', methods = ['POST', 'GET'])
 def regist():
     if request.method == 'POST':
         username = request.form['user_name']
