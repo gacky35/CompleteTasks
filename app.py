@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, redirect, url_for
 import psycopg2
 import key
 
@@ -28,7 +28,7 @@ def add():
         cur.execute("INSERT INTO task (content, status, deadline, detail, username, id) VALUES (%s, %s, %s, %s, %s, %s)", (request.form['contents'], request.form['status'], request.form['deadline'], request.form['detail'], username, ids))
         connection.commit()
         tasks = pick()
-        return render_template('list.html', username=username, tasks=tasks)
+        return redirect(url_for('display'))
     else:
         return render_template('add.html')
 
@@ -51,8 +51,8 @@ def display():
         tasks = pick()
         return render_template('list.html', username=username, tasks=tasks)
 
-@app.route('/edit.html', methods=['POST'])
-def edited():
+@app.route('/edit.html', methods=['POST', 'GET'])
+def edit():
     if request.method == 'POST':
         no = session.get('no')
         cur.execute("UPDATE task SET content = '" + request.form['contents'] + "' WHERE id = '" + no + "'")
@@ -60,12 +60,16 @@ def edited():
         cur.execute("UPDATE task SET deadline = '" + request.form['deadline'] + "' WHERE id = '" + no + "'")
         cur.execute("UPDATE task SET detail = '" + request.form['detail'] + "' WHERE id = '" + no + "'")
         connection.commit()
-    tasks = pick()
-    return render_template('list.html', username=session.get('name'), tasks=tasks)
+        return redirect(url_for('display'))
+    else:
+        session['no'] = request.args.get('no', '')
+        cur.execute("select * from task where id = '" + session.get('no') + "'")
+        tasks = cur.fetchall()
+        return render_template('edit.html', tasks=tasks)
 
 @app.route('/regist.html')
 def regist_disp():
-    return render_template('regist.html')
+    return render_template('regist.html', error="")
 
 @app.route('/index.html', methods = ['POST', 'GET'])
 def regist():
@@ -78,29 +82,23 @@ def regist():
             cur.execute("INSERT INTO users (username, password) VALUES ('" + username + "', md5('" + password + "'))")
             connection.commit()
             return render_template('index.html')
+        else:
+            return render_template('regist.html', error="この名前はすでに使用されています")
     else:
         session.pop('name', None)
         session.pop('no', None)
         return render_template('index.html')
-
-@app.route('/<int:get_id>')
-def edit(get_id):
-    session['no'] = str(get_id)
-    cur.execute("select * from task where id = '" + str(get_id) + "'")
-    tasks = cur.fetchall()
-    return render_template('edit.html', tasks=tasks)
 
 @app.route('/delete')
 def delete():
     session['no'] = request.args.get('no', '')
     cur.execute("delete from task where id = '" + session.get('no') + "'")
     connection.commit()
-    tasks = pick()
-    return render_template('list.html', username=session.get('name'), tasks=tasks)
+    return redirect(url_for('display'))
 
 def pick():
     username = session.get('name')
-    cur.execute("SELECT * FROM task WHERE username='" + username + "' ORDER BY id ASC")
+    cur.execute("SELECT * FROM task WHERE username='" + username + "' ORDER BY deadline ASC")
     tasks = cur.fetchall()
     return tasks
 

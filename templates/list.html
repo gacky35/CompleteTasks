@@ -32,7 +32,7 @@
                 <td>{{ task[1] }}</td>
                 <td>{{ task[2] }}</td>
                 <td>{{ task[3] }}</td>
-                <td><a href="{{ task[5] }}">Edit</a></td>
+                <td><a href="edit?no={{ task[5] }}">Edit</a></td>
                 <td><a href="delete?no={{ task[5] }}" onClick="return check()">Delete</a></td>
             </tr>
             {% endfor %}
