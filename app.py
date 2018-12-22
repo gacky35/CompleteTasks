@@ -30,24 +30,29 @@ def add():
         tasks = pick()
         return redirect(url_for('display'))
     else:
+        username = session.get('name')
+        if not username:
+            return redirect(url_for('display'))
         return render_template('add.html')
 
 @app.route('/list', methods=['POST', 'GET'])
 def display():
     if request.method == 'POST':
-        session['name'] = request.form['user_name']
+        username = request.form['user_name']
         password = request.form['password']
-        username = session.get('name')
-        cur.execute("SELECT 1 FROM users WHERE username='" + username + "' AND password=md5('" + password + "')")
+        session['name'] = username
+        cur.execute("SELECT * FROM users WHERE username='" + username + "' AND password=md5('" + password + "')")
         results = cur.fetchall()
         if not results:
-            return render_template('index.html')
+            return redirect(url_for('log_in'))
         else:
             tasks = pick()
             return render_template('list.html', username=username, tasks=tasks)
 
     else:
         username = session.get('name')
+        if not username:
+            return redirect(url_for('log_in'))
         tasks = pick()
         return render_template('list.html', username=username, tasks=tasks)
 
@@ -63,9 +68,17 @@ def edit():
         return redirect(url_for('display'))
     else:
         session['no'] = request.args.get('no', '')
-        cur.execute("select * from task where id = '" + session.get('no') + "'")
-        tasks = cur.fetchall()
-        return render_template('edit.html', tasks=tasks)
+        cur.execute("select username from task where id ='" + session.get('no') + "'")
+        check = cur.fetchall()
+        for flag in check:
+            name = flag[0]
+        if name == session.get('name'):
+            cur.execute("select * from task where id = '" + session.get('no') + "'")
+            tasks = cur.fetchall()
+            return render_template('edit.html', tasks=tasks)
+        else:
+            tasks = pick()
+            return render_template('list.html', username=session.get('name'), tasks=tasks)
 
 @app.route('/regist')
 def regist_disp():
@@ -92,9 +105,17 @@ def regist():
 @app.route('/delete')
 def delete():
     session['no'] = request.args.get('no', '')
-    cur.execute("delete from task where id = '" + session.get('no') + "'")
-    connection.commit()
-    return redirect(url_for('display'))
+    cur.execute("select username from task where id ='" + session.get('no') + "'")
+    check = cur.fetchall()
+    for flag in check:
+        name = flag[0]
+    if name == session.get('name'):
+        cur.execute("delete from task where id = '" + session.get('no') + "'")
+        connection.commit()
+        return redirect(url_for('display'))
+    else:
+        tasks = pick()
+        return render_template('list.html', username=session.get('name'), tasks=tasks)
 
 def pick():
     username = session.get('name')
