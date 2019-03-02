@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session, redirect, url_for
+from flask import Flask, render_template, request, session, redirect, url_for, Markup
 import psycopg2
 import key
 
@@ -6,6 +6,10 @@ app = Flask(__name__)
 app.secret_key = key.key()
 connection = psycopg2.connect("host=localhost dbname=todo user=postgres password=postgres")
 cur = connection.cursor()
+
+@app.template_filter('cr')
+def cr(arg):
+    return Markup(arg.replace("\r", '<br>'))
 
 @app.route('/')
 def log_in():
