@@ -80,6 +80,21 @@ def edit():
             tasks = pick()
             return render_template('list.html', username=session.get('name'), tasks=tasks)
 
+@app.route('/view')
+def view():
+    session['no'] = request.args.get('no', '')
+    cur.execute("select username from task where id ='" + session.get('no') + "'")
+    check = cur.fetchall()
+    for flag in check:
+        name = flag[0]
+    if name == session.get('name'):
+        cur.execute("select * from task where id = '" + session.get('no') + "'")
+        tasks = cur.fetchall()
+        return render_template('view.html', tasks=tasks)
+    else:
+        tasks = pick()
+        return render_template('list.html', username=session.get('name'), tasks=tasks)
+
 @app.route('/regist')
 def regist_disp():
     return render_template('regist.html', error="")

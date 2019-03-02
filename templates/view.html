@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>View Task</title>
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+        <link rel="stylesheet" href="/static/css/view.css">
+    </head>
+    <body>
+        <h1>View your task</h1>
+        <hr>
+        <p><a href="list">Back to the list</a></p>
+        <div class="cp_tab">
+            <input type="radio" name="cp_tab" id="tab1_1" aria-controls="first_tab01" checked>
+            <label for="tab1_1">newest</label>
+            {% for task in tasks %}
+            <div class="cp_tabpanels">
+                <div id="first_tab01" class="tabpanel">
+                    <table>
+                        <th>
+                            Content
+                        </th>
+                        <tr>
+                            <td>
+                                {{ task[0] }}
+                            </td>
+                        </tr>
+                        <th>
+                            Status
+                        </th>
+                        <tr>
+                            <td>
+                                {{ task[1] }}
+                            </td>
+                        </tr>
+                        <th>
+                            Deadline
+                        </th>
+                        <tr>
+                            <td>
+                                {{ task[2] }}
+                            </td>
+                        </tr>
+                        <th>
+                            Detail
+                        </th>
+                        <tr>
+                            <td>
+                                {{ task[3] }}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </body>
+</html>
