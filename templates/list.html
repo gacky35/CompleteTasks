@@ -3,6 +3,7 @@
     <head>
         <title>List</title>
         <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+        <link rel="stylesheet" href="/static/css/list.css">
         <script type="text/javascript" src="/static/js/list.js"></script>
     </head>
     <body>
@@ -31,7 +32,7 @@
                 <td>{{ task[0] }}</td>
                 <td>{{ task[1] }}</td>
                 <td>{{ task[2] }}</td>
-                <td><a href="view?no={{ task[5] }}">{{ task[3] }}</td>
+                <td><a href="view?no={{ task[5] }}"><p class="tdata">{{ task[3] }}</p></td>
                 <td><a href="edit?no={{ task[5] }}">Edit</a></td>
                 <td><a href="delete?no={{ task[5] }}" onClick="return check()">Delete</a></td>
             </tr>
