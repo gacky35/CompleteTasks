@@ -9,7 +9,7 @@ cur = connection.cursor()
 
 @app.template_filter('cr')
 def cr(arg):
-    return Markup(arg.replace("\r", '<br>'))
+    return Markup(arg.replace('\r', '<br>'))
 
 @app.route('/')
 def log_in():
