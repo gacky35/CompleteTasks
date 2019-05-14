@@ -7,6 +7,8 @@ app.secret_key = key.key()
 connection = psycopg2.connect("host=localhost dbname=todo user=postgres password=postgres")
 cur = connection.cursor()
 
+#hoge
+
 @app.template_filter('cr')
 def cr(arg):
     return Markup(arg.replace('\r', '<br>'))
