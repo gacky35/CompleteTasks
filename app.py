@@ -8,6 +8,7 @@ connection = psycopg2.connect("host=localhost dbname=todo user=postgres password
 cur = connection.cursor()
 
 #hoge
+#modify
 
 @app.template_filter('cr')
 def cr(arg):
