@@ -7,9 +7,6 @@ app.secret_key = key.key()
 connection = psycopg2.connect("host=localhost dbname=todo user=postgres password=postgres")
 cur = connection.cursor()
 
-#hoge
-#modify
-
 @app.template_filter('cr')
 def cr(arg):
     return Markup(arg.replace('\r', '<br>'))
@@ -67,10 +64,25 @@ def display():
 def edit():
     if request.method == 'POST':
         no = session.get('no')
-        cur.execute("UPDATE task SET content = '" + request.form['contents'] + "' WHERE id = '" + no + "'")
-        cur.execute("UPDATE task SET status = '" + request.form['status'] + "' WHERE id = '" + no + "'")
-        cur.execute("UPDATE task SET deadline = '" + request.form['deadline'] + "' WHERE id = '" + no + "'")
-        cur.execute("UPDATE task SET detail = '" + request.form['detail'] + "' WHERE id = '" + no + "'")
+        cur.execute("SELECT third from task where id = '" + no + "'")
+        dline = cur.fetchall()
+        if dline[0][0] is not None:
+            cur.execute("DELETE FROM task WHERE id='" + dline[0][0] + "'")
+            connection.commit()
+        cur.execute("SELECT * FROM task where id = '" + no + "'")
+        ntask = cur.fetchall()
+        ids = 1
+        while True:
+            cur.execute("select * from task where id ='"+str(ids)+"'")
+            check = cur.fetchall()
+            if not check:
+                break
+            ids = ids + 1
+        cur.execute("INSERT INTO task (content, status, deadline, detail, username, id, second, third) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (ntask[0][0], ntask[0][1], ntask[0][2], ntask[0][3], ntask[0][4], ids, ntask[0][5], ntask[0][6]))
+        cur.execute("UPDATE task SET content = '" + request.form['contents'] + "' WHERE id = '" + str(ids) + "'")
+        cur.execute("UPDATE task SET status = '" + request.form['status'] + "' WHERE id = '" + str(ids) + "'")
+        cur.execute("UPDATE task SET deadline = '" + request.form['deadline'] + "' WHERE id = '" + str(ids) + "'")
+        cur.execute("UPDATE task SET detail = '" + request.form['detail'] + "' WHERE id = '" + str(ids) + "'")
         connection.commit()
         return redirect(url_for('display'))
     else:
@@ -141,7 +153,7 @@ def delete():
 
 def pick():
     username = session.get('name')
-    cur.execute("SELECT * FROM task WHERE username='" + username + "' ORDER BY deadline ASC")
+    cur.execute("SELECT * FROM task X WHERE X.username='" + username + "' AND NOT EXISTS (SELECT 1 from task Y WHERE X.id=Y.second) ORDER BY deadline ASC")
     tasks = cur.fetchall()
     return tasks
 
