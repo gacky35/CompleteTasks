@@ -118,7 +118,9 @@ def view():
                 break
         #cur.execute("select * from task where id = '" + session.get('no') + "'")
         #tasks = cur.fetchall()
-        return render_template('view.html', tasks=tasks)
+        length = len(tasks)
+        print(length)
+        return render_template('view.html', tasks=tasks, length=length)
     else:
         tasks = pick()
         return render_template('list.html', username=session.get('name'), tasks=tasks)
