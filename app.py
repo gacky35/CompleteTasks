@@ -107,8 +107,17 @@ def view():
     for flag in check:
         name = flag[0]
     if name == session.get('name'):
-        cur.execute("select * from task where id = '" + session.get('no') + "'")
-        tasks = cur.fetchall()
+        cur.execute("select id, second, third from task where id='" + session.get('no') + "'")
+        backups = cur.fetchall()
+        tasks = []
+        for i in range(3):
+            if backups[0][i] is not None:
+                cur.execute("select * from task where id='" + backups[0][i] + "'")
+                tasks.append(cur.fetchall())
+            else:
+                break
+        #cur.execute("select * from task where id = '" + session.get('no') + "'")
+        #tasks = cur.fetchall()
         return render_template('view.html', tasks=tasks)
     else:
         tasks = pick()
