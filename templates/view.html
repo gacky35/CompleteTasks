@@ -10,18 +10,34 @@
         <hr>
         <p><a href="list">Back to the list</a></p>
         <div class="cp_tab">
-            <input type="radio" name="cp_tab" id="tab1_1" aria-controls="first_tab01" checked>
-            <label for="tab1_1">latest</label>
-            {% for task in tasks %}
+            {% for i in range(length) %}
+            {% if i == 0 %}
+            <input type="radio" name="cp_tab" id="tab1_{{i}}" aria-controls="first_tab0{{i}}" checked>
+            {% else %}
+            <input type="radio" name="cp_tab" id="tab1_{{i}}" aria-controls="first_tab0{{i}}">
+            {% endif %}
+            <label for="tab1_{{i}}">
+                {% if i == 0 %}
+                latest
+                {% endif %}
+                {% if i == 1 %}
+                pre1
+                {% endif %}
+                {% if i == 2 %}
+                pre2
+                {% endif %}
+            </label>
+            {% endfor %}
             <div class="cp_tabpanels">
-                <div id="first_tab01" class="tabpanel">
+                {% for i in range(length) %}
+                <div id="first_tab0{{i}}" class="cp_tabpanel">
                     <table>
                         <th>
                             Content
                         </th>
                         <tr>
                             <td>
-                                {{ task[0] }}
+                                {{ tasks[i][0][0] }}
                             </td>
                         </tr>
                         <th>
@@ -29,7 +45,7 @@
                         </th>
                         <tr>
                             <td>
-                                {{ task[1] }}
+                                {{ tasks[i][0][1] }}
                             </td>
                         </tr>
                         <th>
@@ -37,7 +53,7 @@
                         </th>
                         <tr>
                             <td>
-                                {{ task[2] }}
+                                {{ tasks[i][0][2] }}
                             </td>
                         </tr>
                         <th>
@@ -45,13 +61,13 @@
                         </th>
                         <tr>
                             <td>
-                                {{ task[3] | cr }}
+                                {{ tasks[i][0][3] | cr }}
                             </td>
                         </tr>
                     </table>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
     </body>
 </html>
