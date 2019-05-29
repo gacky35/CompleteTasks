@@ -154,7 +154,11 @@ def delete():
     for flag in check:
         name = flag[0]
     if name == session.get('name'):
-        cur.execute("delete from task where id = '" + session.get('no') + "'")
+        cur.execute("select id, second, third from task where id = '" + session.get('no') + "'")
+        deltask = cur.fetchall()
+        for i in deltask:
+            for j in i:
+                cur.execute("delete from task where id = '" + j + "'")
         connection.commit()
         return redirect(url_for('display'))
     else:
